@@ -1,0 +1,806 @@
+<title> Delf, the ultimate gig guide </title>
+<meta name="viewport"   content="width=device-width, initial-scale=1.0">
+ <script src="croppie.js"></script>
+ <link rel="stylesheet" href="croppie.css" type="text/css">
+<style>
+
+
+* {
+  box-sizing:border-box;
+}
+ 
+ body {margin: 0;}
+ 
+.top {
+background-color: #00FFFF;
+width: 100%;
+height: 50px;
+position: fixed;
+font: italic bold 30px courier blue, serif;
+text-shadow: 0px 0px 10px black,0px 0px 2px black;
+color: #00FFFF;
+padding-top:5px;
+
+
+}
+
+
+.menu > div {
+  background-color: lightgrey;
+  text-align: center;
+  padding:4px;
+ 
+  font-size: 14px;
+}
+
+
+
+.button{
+background-color: grey;
+ border: 3px outset #00FFFF;
+  border-radius: 5px;
+  margin: 20px;
+  padding:3px;
+}
+ .button:active{
+ border: 3px solid #00bFbF;
+ }
+
+.main {
+
+  background-color: #00bfbf;
+ text-align: center;
+   display: inline-block;
+ width: 700px; 
+ min-height: 1200px;
+ border-style: none outset;
+ border-width: 8px;
+ padding-top:0px;
+ 
+}
+
+
+#textArea{
+width: 100%;
+margin-top:100px;
+font-family: verdana;
+font-size: 16px;
+
+}
+
+
+
+/* Use a media query to add a break point at 700px: */
+@media screen and (max-width:700px) {
+  .main{width: 100%;
+  border-style: none;
+ 
+  }
+
+  .menu{
+  width: 100%;
+  
+  }
+
+ 
+}
+
+
+/*modal boxes and functioning things*/
+
+.mContainer{
+ display: none; 
+  position: fixed; 
+  z-index: 1; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%;
+  overflow: auto; 
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+
+.mbutton{
+background-color: grey;
+ border: 3px outset #00FFFF;
+  border-radius: 5px;
+}
+
+#gContent{
+width: 200px;
+height: 290px;
+font-family: verdana;
+font-size: 12px;
+text-align: left;
+ background-color: grey;
+  margin: 130px auto; 
+  padding: 20px;
+  border: 3px outset #00FFFF;
+  border-radius: 5px;
+}
+#gOK{
+float: right;
+}
+
+#gClose{
+float: left;
+}
+
+#eAContent{
+width: 200px;
+height: 100px;
+font-family: verdana;
+font-size: 12px;
+text-align: center;
+ background-color: grey;
+  margin: 130px auto; 
+  padding: 20px;
+  border: 3px outset #00FFFF;
+  border-radius: 5px;
+}
+#eAOK{
+float: right;
+}
+
+#eAClose{
+float: left;
+}
+
+#imgContent{
+width: 400px;
+height: 500px;
+font-family: verdana;
+font-size: 12px;
+text-align: center;
+ background-color: grey;
+  margin: 30px auto; 
+  padding: 20px;
+  border: 3px outset #00FFFF;
+  border-radius: 5px;
+}
+#imgOK{
+float: right;
+}
+
+#imgClose{
+float: left;
+}
+</style>
+</head>
+<body style="text-align: center">
+<div class="top"> Delf </div>
+
+<div class="main">
+  
+  
+  
+  <div id="textArea">
+ 
+      <div id="label" > Control Panel</div>
+	 <br><br>
+	 <div ID="initial">
+	 <div> 
+	 <input id="loginPassword" size="40" type="password" placeholder="Password"> </input> </br>
+	 <text Onclick="fPass()" Style="font-size: 10px;" >Forgot Password</text></br>
+	 </br>
+	 <input id="loginEmail" size="40" type="email" placeholder="Email Address"> </input>
+	 
+	 </div>
+	 <div>
+	 
+	 <button type="button" class="button" ID="loginArtist" Onclick="logArtist()"> Login as Artist </button>
+	  <button type="button" class="button" ID="loginVenue" Onclick="logVenue()"> Login as Venue </button>
+	 </div>
+	 <div>
+	  <button type="button" class="button" ID="Register" Onclick="Register()"> Register </button>
+	 </div>
+   </div>
+   <div id="register" style="display:none">
+   <text onclick="back()" ID="back" style="font-size: 12px;"> << Back </text> <br>
+    <input  id="email" size="40" type="email" placeholder="Email Address"> </input>
+	<text id="displayError"></text>
+ <button type="button" class="button" id="sendCode" onclick="sendCode()"> Send Code</button>
+   </div>
+   
+   <div id="register2" style="display:none">
+   <text onclick="back2()" id="back2" style="font-size: 12px;"> << Back </text> <br>
+    <input  id="code" size="40" type="text" placeholder="Enter Code"> </input>
+	
+ <button type="button" class="button" id="verify" onclick="verify()"> Verify Code</button>
+  <text style="font-size: 12px;" id="displayError2"></text> 
+  <input hidden="true" id="vcode"></input>
+  </div>
+   <div id="register3" style="display:none">
+   <text  style="font-size: 12px;"> Success, please enter a new password and select type of registration </text> <br>
+   <br><text  style="font-size: 12px;" >email: </text><text  style="font-size: 12px;" id="emaillabel"></text></br></br></br>
+   <input id="newPwd" size="30"> </input></br>
+   <text  style="font-size: 12px;" id="displayError3"></text><br>
+   <text style="font-size:12px"> Password can only contain letters and numbers and must be more then 4 characters long </text></br>
+   <button class="button" onclick="registerNew(1)">Register as Venue</button> 
+   <button class="button" onclick="registerNew(0)">Register as Artist</button>
+   
+   </div>
+   
+   </div>
+   
+   
+   <div style="display:none"   id="aPage">
+   <div>
+   <img id="aImage" src="img/sample.jpg" style="margin:10px; float:left; border:3px outset grey" alt="your picture"  onclick="pic()" width="100" height="100">
+   <button onclick="logout()" class="button" style="float:right; top: 0; margin:5px">Logout</button>
+  <text onclick = "editAName()" style="font-size:30pt;  font-family: Verdana; font-weight: bold "  id="aName" >Your Name</text>
+   
+   </div>
+   
+ <div id="genres" class="mContainer">
+  <div id="gContent">
+  <input type="checkbox" id="country"> Country<br>
+  <input type="checkbox" id="folk"> Folk<br>
+  <input type="checkbox" id="rock"> Rock<br>
+ <input type="checkbox" id="blues"> Blues<br>
+ <input type="checkbox" id="jamband"> Jam band<br>
+<input type="checkbox" id="songwriter"> Songwriter<br>
+	<input type="checkbox" id="alternative"> Alternative<br>
+	<input type="checkbox" id="electronic"> Electronic<br>
+	 <input type="checkbox" id="rap"> Rap<br><br> <br>
+	 
+  
+   <button id="gClose" type="button" onclick="gClose()" class="mbutton" > Close</button>
+  
+   <button id="gOK" type="button" onclick="gOK()" class="mbutton"> Done </button>
+  </div>
+  </div>
+  
+   <div id="imgUpload" class="mContainer">
+  <div id="imgContent">
+   <div style=" height:400px"  id="cropImage">
+    </div>
+	<div>
+	 <input id="imgFile" type="file" class="mbutton" onchange="readFile(this)" accept="image/*">
+ <br><br>
+	  
+	 <button id="imgOK" onclick="aimgOK()" class="mbutton"> Done </button>
+	  <button onclick="rotate()" class="mbutton"> Rotate</button>
+	  <button id="imgClose" type="button" onclick="aimgClose()" class="mbutton" > Close</button>
+	  </div>
+  </div>
+  </div>
+  
+  <div id="eAName" class="mContainer">
+   <div id="eAContent">
+   <input type="text" id="eAInput"> </input><br><br>
+   
+   <button id="eAClose" type="button" onclick="eAClose()" class="mbutton" > Close</button>
+  
+   <button id="eAOK" type="button" onclick="eAOK()" class="mbutton"> Done </button>
+   
+  </div>
+  </div>
+    
+  
+   <div style="text-align:center">
+   <table style="margin:auto">
+		<tr>
+			<td> Bio:</td>
+			<td><textarea id="aBio" cols="30" readonly="true" placeholder="Brief summary of your music"></textarea></td>
+		</tr>
+		<tr>
+			<td> Genre: </td>
+			<td><input id="aGenre" readonly="true" size="30" onclick="genreEdit()" placeholder="Types of music you play"></input></td>
+		</tr>
+		<tr>
+			<td> Website: </td>
+			<td><input id="aWebsite" size="30" readonly="true" placeholder="Your Website"></input></td>
+		</tr>
+		<tr>
+			<td>Email:</td>
+			<td><input id="aEmail" size="30" readonly="true"></input></td>
+			
+		</tr>
+		<tr>
+			<td>Notify:</td>
+			<td> <input id="aNotify" type="checkbox" onchange="aCheck(this.checked)" disabled="disabled" ></input>Receive an email when a venue creates a gig for you</td>
+		</tr>
+   
+   </table>
+ 
+   <button id="picEdit" onclick="aChangeCancel()" style="display:none" class="button" >Cancel</button>
+   <button id= "aProEdit" onclick="editProfile()" class="button">Edit Profile</button>
+   </div>
+   </div>
+</div>
+<script>
+var email = null;
+var aProfile = null;
+
+var artEdit = false;
+// variables for artist profile
+var artName = null;
+var artWebsite = null;
+var artBio = null;
+var artImage = null;
+var artImgChanged = 0;
+var artCountry = null;
+var artFolk =null;
+var artRock = null;
+var artBlues = null;
+var artJamband= null;
+var artSongwriter = null;
+var artAlternative = null;
+var artElectronic = null;
+var artRap = null;
+var artNotification =null;
+var artGenre ="";
+var artGenreTmp = "";
+
+
+function rotate(){
+if (orient > 360){
+orient += 90;
+}
+else{
+orient = 90; 
+}
+vanilla.rotate(orient);
+}
+
+var orient = 90;
+
+
+
+
+
+function genreToString(){
+		artGenre ="";
+		if(artCountry == 1){
+		artGenre += "Country, ";
+		}
+		if(artFolk == 1){
+		artGenre += "Folk, ";
+		}if(artRock == 1){
+		artGenre += "Rock, ";
+		}if(artBlues == 1){
+		artGenre += "Blues, ";
+		}if(artJamband == 1){
+		artGenre += "Jamband, ";
+		}if(artSongwriter == 1){
+		artGenre += "Songwriter, ";
+		}if(artAlternative == 1){
+		artGenre += "Alternative, ";
+		}if(artElectronic == 1){
+		artGenre += "Electronic, ";
+		}if(artRap == 1){
+		artGenre += "Rap, ";
+		}
+		
+
+}
+
+function saveArtistToSql(){
+console.log(artCountry);
+var aProfiledata = new FormData();
+	aProfiledata.append("AEmail", email);
+	aProfiledata.append("AName", artName);
+aProfiledata.append("AImage", tmpImg);
+aProfiledata.append("ABio", artBio);
+aProfiledata.append("AWebsite", artWebsite);
+if (artCountry == 1){
+aProfiledata.append("ACountry", 1);
+} else{
+aProfiledata.append("ACountry", 0);
+}
+if (artFolk == 1){
+aProfiledata.append("AFolk", 1);
+} else{
+aProfiledata.append("AFolk", 0);
+}
+if (artRock == 1){
+aProfiledata.append("ARock", 1);
+} else{
+aProfiledata.append("ARock", 0);
+}
+if (artBlues == 1){
+aProfiledata.append("ABlues", 1);
+} else{
+aProfiledata.append("ABlues", 0);
+}
+if (artJamband == 1){
+aProfiledata.append("AJamband", 1);
+} else{
+aProfiledata.append("AJamband", 0);
+}
+if (artSongwriter == 1){
+aProfiledata.append("ASongwriter", 1);
+} else{
+aProfiledata.append("ASongwriter", 0);
+}
+if (artAlternative == 1){
+aProfiledata.append("AAlternative", 1);
+} else{
+aProfiledata.append("AAlternative", 0);
+}
+if (artElectronic == 1){
+aProfiledata.append("AElectronic", 1);
+} else{
+aProfiledata.append("AElectronic", 0);
+}
+if (artRap == 1){
+aProfiledata.append("ARap", 1);
+} else{
+aProfiledata.append("ARap", 0);
+}
+
+aProfiledata.append("ANotification", artNotification);
+aProfiledata.append("AImgSrc", artImage);
+aProfiledata.append("AChange", artImgChanged);
+	
+var saveProfile = new XMLHttpRequest();
+ 
+ saveProfile.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+	console.log(this.responseText);
+	artistGetDetails(0);
+artImgChanged = 0;
+	}
+	}
+	saveProfile.open("POST", "saveProfile.php", true);
+	
+	
+ saveProfile.send(aProfiledata);
+
+
+
+}
+
+function fillArtist(){
+		document.getElementById("aEmail").value = email;
+		if(artName !== null){
+		document.getElementById("aName").innerHTML = artName;
+		}else{
+		document.getElementById("aName").innerHTML = "Your Name";
+		}
+		document.getElementById("aImage").src = artImage;
+		document.getElementById("aBio").value = artBio;
+		document.getElementById("aWebsite").value = artWebsite;
+		document.getElementById("aGenre").value = artGenre;
+		document.getElementById("aNotify").checked = artNotification;
+}
+
+var eAModal = document.getElementById("eAName");
+
+function editAName(){
+console.log("clicked");
+	if (artEdit == true){
+	document.getElementById("eAInput").value = artName;
+	eAModal.style.display= "block";
+}
+}
+
+function eAOK(){
+document.getElementById("aName").innerHTML = document.getElementById("eAInput").value;
+artName = document.getElementById("eAInput").value;
+eAModal.style.display= "none";
+}
+
+function eAClose(){
+eAModal.style.display= "none";
+}
+
+
+var gModal = document.getElementById("genres");
+function genreEdit(){
+if (artEdit == true){
+document.getElementById("country").checked = (artCountry == 1);
+document.getElementById("folk").checked = (artFolk == 1);
+document.getElementById("rock").checked = (artRock == 1);
+document.getElementById("blues").checked = (artBlues == 1);
+document.getElementById("jamband").checked = (artJamband == 1);
+document.getElementById("songwriter").checked = (artSongwriter == 1);
+document.getElementById("alternative").checked = (artAlternative == 1);
+document.getElementById("electronic").checked = (artElectronic == 1);
+document.getElementById("rap").checked = (artRap == 1);
+gModal.style.display= "block";
+}
+}
+
+
+function gOK(){
+artCountry = document.getElementById("country").checked;
+artFolk = document.getElementById("folk").checked;
+artRock = document.getElementById("rock").checked;
+artBlues = document.getElementById("blues").checked;
+artJamband = document.getElementById("jamband").checked;
+artSongwriter = document.getElementById("songwriter").checked;
+artAlternative = document.getElementById("alternative").checked;
+artElectronic = document.getElementById("electronic").checked;
+artRap = document.getElementById("rap").checked;
+genreToString();
+document.getElementById("aGenre").value = artGenre;
+gModal.style.display= "none";
+}
+
+function gClose(){
+gModal.style.display= "none";
+}
+
+
+function aChangeCancel(){
+artEdit = false;
+artGenre = artGenreTmp;
+document.getElementById("aBio").readOnly = true;
+document.getElementById("aWebsite").readOnly = true;
+document.getElementById("aNotify").disabled = true;
+document.getElementById("aImage").style.border = "3px outset grey";
+document.getElementById("aProEdit").innerHTML = "Edit Profile";
+document.getElementById("aName").style.border = "none";
+document.getElementById("aGenre").style.border = "none";
+document.getElementById("picEdit").style.display = "none";
+fillArtist();
+}
+
+
+function aCheck(x){
+artNotification = x;
+}
+
+var vanilla = null;
+
+var aimgModal = document.getElementById("imgUpload");
+
+function crop(imgurl){
+
+	vanilla.bind({
+    url: imgurl,
+    orientation: 1
+});
+}
+
+function pic(){
+if (artEdit == true){
+aimgModal.style.display= "block";
+var el = document.getElementById('cropImage');
+if (vanilla == null){
+	vanilla = new Croppie(el, {
+    viewport: { width: 150, height: 150 },
+    boundary: { width: 300, height: 300 },
+    showZoomer: true,
+    enableOrientation: true
+	
+});
+}
+
+
+}
+}
+var tmpImg;
+function aimgOK(){
+
+vanilla.result('blob').then(function(blob) {
+    
+	document.getElementById('aImage').src = URL.createObjectURL(blob);
+	tmpImg = blob;
+	artImgChanged = 1;
+	aimgModal.style.display= "none";
+});
+}
+
+function readFile(input) {
+  let file = input.files[0];
+
+  let reader = new FileReader();
+
+  reader.readAsDataURL(file);
+
+  reader.onload = function() {
+  crop(reader.result);
+  };
+
+  reader.onerror = function() {
+  };
+}
+
+function aimgClose(){
+aimgModal.style.display= "none";
+}
+
+function editProfile(){
+if ( artEdit !== true){
+artGenreTmp = artGenre;
+console.log(artEdit);
+document.getElementById("aBio").readOnly = false;
+document.getElementById("aWebsite").readOnly = false;
+document.getElementById("aNotify").disabled = false;
+document.getElementById("aImage").style.border = "3px outset #00FFFF";
+document.getElementById("aProEdit").innerHTML = "Save Changes";
+document.getElementById("aName").style.border = "3px outset #00FFFF";
+document.getElementById("aGenre").style.border = "3px outset #00FFFF";
+document.getElementById("picEdit").style.display = "inline";
+artEdit = true;
+}
+else{
+artEdit = false;
+document.getElementById("aBio").readOnly = true;
+document.getElementById("aWebsite").readOnly = true;
+document.getElementById("aNotify").disabled = true;
+document.getElementById("aImage").style.border = "3px outset grey";
+document.getElementById("aProEdit").innerHTML = "Edit Profile";
+document.getElementById("aName").style.border = "none";
+document.getElementById("aGenre").style.border = "none";
+document.getElementById("picEdit").style.display = "none";
+
+artName = document.getElementById("aName").innerHTML;
+artWebsite = document.getElementById("aWebsite").value;
+artNotification = document.getElementById("aNotify").checked;
+artBio = document.getElementById("aBio").value ;
+saveArtistToSql();
+}
+}
+
+function Register(){
+document.getElementById("initial").style.display ="none";
+document.getElementById("register").style.display ="block";
+
+}
+
+function logout(){
+email = null;
+
+var aProfile = null;
+
+artName = null;
+artWebsite = null;
+artBio = null;
+artImage =null;
+artCountry = null;
+artFolk =null;
+artRock = null;
+artBlues = null;
+artJamband= null;
+artSongwriter = null;
+artAlternative = null;
+artElectronic = null;
+artRap = null;
+artNotification =null;
+artGenre ="";
+	document.getElementById("initial").style.display ="block";
+	document.getElementById("label").style.display ="block";
+	document.getElementById("aPage").style.display ="none";
+	document.getElementById("textArea").style.marginTop = "100px";
+}
+
+function logArtist(){
+	email = document.getElementById("loginEmail").value;
+	artistDisplay();
+	}
+	
+function artistDisplay(){
+	document.getElementById("initial").style.display ="none";
+	document.getElementById("label").style.display ="none";
+	document.getElementById("aPage").style.display ="block";
+	document.getElementById("textArea").style.marginTop = "50px";
+	artistGetDetails(0);
+}
+function artistGetDetails(type){
+var getDetails = new XMLHttpRequest();
+ 
+ getDetails.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+	console.log(this.responseText);
+		aProfile = JSON.parse(this.responseText) ;
+		console.log(aProfile);
+		artName = aProfile[0].AName;
+		artWebsite = aProfile[0].AWebsite;
+		artBio = aProfile[0].ABio;
+		artImage = aProfile[0].AImage;
+		artCountry = aProfile[0].ACountry;
+		artFolk = aProfile[0].AFolk;
+		artRock = aProfile[0].ARock;
+		artBlues = aProfile[0].ABlues;
+		artJamband= aProfile[0].AJamband;
+		artSongwriter = aProfile[0].ASongwriter;
+		artAlternative = aProfile[0].AAlternative;
+		artElectronic = aProfile[0].AElectronic;
+		artRap = aProfile[0].ARap;
+		artNotification = aProfile[0].ANotification;
+		genreToString();
+		fillArtist();
+		
+	
+	}
+
+}
+	console.log(type+email);
+	getDetails.open("POST", "getDetails.php", true);
+	getDetails.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	getDetails.send("type=" + type + "&email=" + email);
+}
+
+function logVenue(){}
+
+function fPass(){
+
+
+}
+
+function back(){
+document.getElementById("initial").style.display ="block";
+document.getElementById("register").style.display ="none";
+}
+
+function back2(){
+document.getElementById("register").style.display ="block";
+document.getElementById("register2").style.display ="none";
+
+}
+var code = null;
+
+function sendCode(){
+email = document.getElementById("email").value;
+console.log(email);
+ var sendMail = new XMLHttpRequest();
+ 
+ sendMail.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+if (this.responseText == "Fail"){
+document.getElementById("displayError").innerHTML= "Failed to send code. Please check email address and internet connection";
+	}
+	else{
+	console.log(this.responseText);
+	code = this.responseText;
+	verifyPage();
+	}
+	}
+	}
+sendMail.open("GET", "sendCode.php?email="+email, true);
+ sendMail.send();
+
+
+}
+function verifyPage(){
+	document.getElementById("register2").style.display ="block";
+document.getElementById("register").style.display ="none";
+}
+
+function verify(){
+console.log("started"+code+"entered"+document.getElementById("code").value);
+var vcode = document.getElementById("code").value;
+console.log(vcode+code);
+if (code.trim() == document.getElementById("code").value ) {
+console.log("verified");
+document.getElementById("register3").style.display ="block";
+document.getElementById("register2").style.display ="none";
+document.getElementById("emaillabel").innerHTML = email;
+}
+else {
+document.getElementById("displayError2").innerHTML="Incorrect code";
+}
+
+}
+
+function registerNew(type){
+var pwd = document.getElementById("newPwd").value;
+var addNew = new XMLHttpRequest();
+ 
+ addNew.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+if (this.responseText == "1"){
+		document.getElementById("register3").style.display= "none";
+		
+		artistDisplay();
+	}
+	else{
+	document.getElementById("displayError3").innerHTML= "Error"+this.responseText;
+	}
+}
+}
+	addNew.open("POST", "registerNew.php", true);
+	addNew.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	addNew.send("type=" + type + "&email=" + email + "&pwd=" + pwd);
+}
+
+</script>
+
+
+</body>
+</html>
